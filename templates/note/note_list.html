@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+	Your Notes
+{% endblock title %}
+
+{% block content %}
+<style>
+
+body {
+	background-image: url('{% static "img/note.png" %}');
+	background-size: cover;
+  	background-position: center;
+  	background-attachment: fixed; 
+  	background-repeat: no-repeat;
+  	font-family: ubuntu;
+}
+
+
+.note-container {
+    max-width: 1000px;
+    margin: 50px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.note-card {
+    background: #ffffff6e; 
+    backdrop-filter: blur(5px);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.note-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.note-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.note-body {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.note-owner {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 15px;
+}
+
+.note-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+</style>
+
+<div class="row text-white container-fluid mt-5 col-11 mx-lg-5 mx-2">
+
+	<div class="col-6">
+		<h1 class="text-start">Notes</h1>		
+	</div>
+
+	<div class="col-6 text-end">
+		<a href="{% url 'create_note' %}" class="btn btn-do"><i class="fa fa-plus-circle"></i> New note</a>
+	</div>
+
+</div>
+	
+	<hr class="container mt-5 mb-5">
+
+<div class="note-container">
+    {% for i in note %}
+        <div class="note-card ">
+            <div>
+                <div class="note-title">{{ i.title }}</div>
+                <div class="note-body">{{ i.body_summary }}</div>
+                <div class="note-owner"><i class="fa fa-user"></i> Owner: {{ i.owner.username }}</div>
+                <div class="note-owner"><i class="fa fa-clock"></i> {{ i.date|date:"Y/m/d - H:i" }}</div>
+            </div>
+            <div class="note-actions">
+                <a href="{{ i.get_absolute_url }}" class="btn-custom"><i class="fa fa-external-link"></i> View</a>
+                <form method="POST" action="{% url 'delete_note' i.pk %}">
+                	{% csrf_token %}
+                	<button type="submit" class="btn-custom"><i class="fa fa-trash "></i> Delete</button>
+                </form>
+            </div>
+        </div>
+    {% empty %}
+        <p style="grid-column: 1 / -1; text-align: center; font-size: 2rem; color: black;">No notes found. Create a new one!</p>
+    {% endfor %}
+</div>
+
+{% endblock content %}

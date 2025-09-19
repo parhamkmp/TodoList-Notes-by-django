@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %}
+	Create New Todo List
+{% endblock title %}
+
+
+{% block content %}
+
+
+<body style="
+	background-image: url('{% static "img/create_todo.png" %}');
+		background-size: cover;
+  	background-position: center;
+  	background-attachment: fixed; 
+  	background-repeat: no-repeat;
+">
+</body>
+
+<div class="container-fluid mt-5 login_to_show col-lg-10 col-10" style="
+	 background: rgba(255, 255, 255, 0.1);
+	  backdrop-filter: blur(12px);
+	  -webkit-backdrop-filter: blur(12px);
+	  color: #fff;
+	  padding: 20px;
+	  border-radius: 8px;
+">
+	<h1 class="text-center">Create Todo List</h1>
+	<br>
+	<form method="POST" class="col-10" style="margin-left: auto;margin-right: auto;">
+		{% csrf_token %}
+		{{ form|crispy }}
+		<br>
+		<a href="{% url 'home_page' %}" class="link-light"><i class="fa fa-undo"></i> Back home page</a>
+		<br><br>
+		<button type="submit" class="btn btn-custom col-3">Create</button>
+	</form>
+	<br>
+</div>
+<br><br>
+{% endblock content %}

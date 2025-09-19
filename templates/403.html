@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>403 – Forbidden</title>
+  <style>
+    /* Reset & base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
+
+    /* Animated gradient background */
+    body {
+      background: linear-gradient(135deg, #ff6ec4, #7873f5, #4adeff);
+      background-size: 600% 600%;
+      animation: gradientShift 15s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      color: #fff;
+    }
+
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating shapes */
+    .shape {
+      position: absolute;
+      opacity: 0.6;
+      border-radius: 4px;
+      animation: float 8s ease-in-out infinite;
+    }
+    .shape.circle { width: 80px; height: 80px; border-radius: 50%; background: #ffea00; top: 20%; left: 15%; }
+    .shape.triangle {
+      width: 0; height: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: 86px solid #ff4858;
+      top: 70%; left: 25%;
+      animation-duration: 10s;
+    }
+    .shape.square { width: 60px; height: 60px; background: #00ff9d; top: 40%; left: 80%; }
+    .shape.hexagon {
+      width: 100px; height: 55px;
+      background: #8e44ad;
+      position: absolute;
+      top: 15%; left: 75%;
+      clip-path: polygon(
+        25% 0%, 75% 0%,
+        100% 50%, 75% 100%,
+        25% 100%, 0% 50%
+      );
+      animation-duration: 12s;
+    }
+    .shape.small-circle { width: 40px; height: 40px; border-radius: 50%; background: #18ffff; top: 85%; left: 60%; animation-duration: 6s; }
+    .shape.pill { width: 120px; height: 30px; background: #ffffff33; border-radius: 30px; top: 55%; left: 45%; animation-duration: 9s; }
+    .shape.diamond {
+      width: 80px; height: 80px;
+      background: #ff8c00;
+      top: 30%; left: 55%;
+      transform: rotate(45deg);
+      animation-duration: 11s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50%      { transform: translateY(-40px) rotate(180deg); }
+    }
+
+    /* Content container */
+    .container {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 600px;
+    }
+    .container h1 {
+      font-size: 12vw;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+    .container p {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Button */
+    .btn-home {
+      display: inline-block;
+      text-decoration: none;
+      color: #7873f5;
+      background: #fff;
+      padding: 0.75rem 2rem;
+      border-radius: 50px;
+      font-weight: bold;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .btn-home:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    /* Laptop-specific tweaks */
+    @media (min-width: 1024px) {
+      .shape { opacity: 0.8; }
+      .container h1 { font-size: 10vw; }
+      .container p { font-size: 2rem; }
+    }
+    
+  </style>
+</head>
+<body>
+  <!-- Decorative shapes -->
+  <div class="shape circle"></div>
+  <div class="shape triangle"></div>
+  <div class="shape square"></div>
+  <div class="shape hexagon"></div>
+  <div class="shape small-circle"></div>
+  <div class="shape pill"></div>
+  <div class="shape diamond"></div>
+
+  <!-- Main message -->
+  <div class="container">
+    <h1>403 Forbidden</h1>
+    <p>You cant access !!</p>
+    <a href="/" class="btn-home">Back to Home</a>
+  </div>
+</body>
+</html>

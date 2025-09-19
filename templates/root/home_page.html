@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Welcome to Todo List
+{% endblock title %}
+
+{% block content %}
+
+<style>
+  .custom-carousel-btn {
+    width: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+  }
+  .carousel-control-prev {
+    left: -40px;
+  }
+  .carousel-control-next {
+    right: -40px;
+  }
+</style>
+
+<body class="bg-dark text-light"></body>
+
+<!-- Hero Section -->
+<header class="hero animate-on-load" style="background-image: url('{% static "img/bg.jpg" %}');">
+    <div class="overlay"></div>
+    <div class="hero-content text-center">
+      <h1 class="animate-on-load">Professionalize your daily planning.</h1>
+      <p class="border-top border-bottom my-5 border-primary">With you, two simple, fast and beautiful lists</p>
+      <div class="animate-on-load">
+        {% if user.is_authenticated %}
+          <a href="{% url 'profile_page' %}" class="btn-custom"><i class="fa fa-user"></i> Profile({{ user.username }})</a>  
+          <a href="{% url 'todo_lists' %}" class="btn-custom mx-4"><i class="fa fa-tasks"></i> Todo lists</a>
+          <a href="{% url 'notes' %}" class="btn-custom"><i class="fa fa-notes-medical"></i> Notes</a>
+        {% else %}
+          <a href="{% url 'sign_up_page' %}" class="btn btn-custom btn-lg mb-4 col-7">Sign Up</a>
+          <a href="{% url 'login' %}" class="btn btn-custom btn-lg col-7">Login</a>
+        {% endif %}
+      </div>
+    </div>
+</header>
+
+<!-- Features Section -->
+<section class="container my-5">
+  <h2 class="text-center mb-5"><i class="fa fa-cogs text-primary"></i> Features of Our Site</h2>
+  <div class="row g-4 justify-content-center">
+    <div class="col-12 col-md-4">
+      <div class="card bg-dark text-light h-100 shadow-lg rounded-4 p-3 text-center animate-on-load">
+        <div class="card-body">
+          <i class="fa fa-tasks fa-3x mb-3 text-info"></i>
+          <h5 class="card-title mb-2">Todo List Management</h5>
+          <p class="card-text">Create, edit, and manage your tasks easily with quick access and simple organization.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4">
+      <div class="card bg-dark text-light h-100 shadow-lg rounded-4 p-3 text-center animate-on-load">
+        <div class="card-body">
+          <i class="fa fa-sticky-note fa-3x mb-3 text-warning"></i>
+          <h5 class="card-title mb-2">Quick Note Taking</h5>
+          <p class="card-text">Capture your notes and important points quickly and access them anytime easily.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4">
+      <div class="card bg-dark text-light h-100 shadow-lg rounded-4 p-3 text-center animate-on-load">
+        <div class="card-body">
+          <i class="fa fa-user fa-3x mb-3 text-success"></i>
+          <h5 class="card-title mb-2">Personal Profile</h5>
+          <p class="card-text">Each user has a personal profile to manage their information and activities efficiently.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if user.is_authenticated %}
+<!-- Recent Todo Lists -->
+<section class="container-fluid position-relative p-5" style="background-image: url('{% static "img/note.png" %}'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;">
+  <h2 class="text-center mb-5"><i class="fa fa-tasks text-primary"></i>Your Recent Todo Lists</h2>
+  {% if todo_list %}
+    <div id="todoCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for todo in todo_list %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <div class="d-flex justify-content-center">
+              <div class="card text-light h-100 shadow-lg border-0 rounded-4 animate-on-load" style="width: 90%; max-width: 700px; background-color: #ffffff6e;">
+                <div class="card-body d-flex flex-column">
+                  <span class="card-title fs-3 text-info">
+                    {% if todo.is_done %}
+                      <i class="fa fa-check-circle text-success bg-light rounded rounded-5"></i>
+                    {% else %}
+                      <i class="fa fa-times-circle text-danger bg-light rounded rounded-5"></i>
+                    {% endif %}
+                    {{ todo.todo_list_name }}
+                  </span>
+                  <p class="card-text flex-grow-1">{{ todo.todo_list_caption|truncatewords:20 }}</p>
+                  <div class="d-flex justify-content-between mt-3">
+                    <small class="text-muted"><i class="fa fa-clock"></i> {{ todo.date|date:"M d, Y" }}</small>
+                    <a href="{% url 'todo_list_detail' todo.pk %}" class="btn btn-sm btn-outline-info">View</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if todo_list|length > 1 %}
+      <button class="carousel-control-prev custom-carousel-btn" type="button" data-bs-target="#todoCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next custom-carousel-btn" type="button" data-bs-target="#todoCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+      {% endif %}
+    </div>
+  {% else %}
+    <h4 class="text-danger text-center"><i class="fa fa-times-circle"></i> No todo list found!</h4>
+  {% endif %}
+</section>
+{% endif %}
+
+<!-- Comments Carousel Section -->
+<section class="container my-5 p-lg-2 p-5">
+  <h2 class="text-center mb-5"><i class="fa fa-comments text-primary"></i> What Our Users Say</h2>
+
+  {% if comments %}
+    <div id="commentsCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for comment in comments %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <div class="d-flex justify-content-center">
+              <div class="card bg-light text-dark h-100 shadow-lg rounded-4 p-3 text-center animate-on-load" style="width: 90%; max-width: 700px;">
+                <div class="card-body">
+                  <i class="fa fa-user-circle fa-3x mb-3 text-info"></i>
+                  <h5 class="card-title">{{ comment.title }}</h5>
+                  <p class="mb-2">
+                    {% for i in "12345" %}
+                      {% if forloop.counter <= comment.rate|add:"0" %}
+                        <i class="fa fa-star text-warning"></i>
+                      {% else %}
+                        <i class="fa fa-star text-secondary"></i>
+                      {% endif %}
+                    {% endfor %}
+                  </p>
+                  <p class="card-text">{{ comment.body }}</p>
+                  <h6 class="mt-2">- {{ comment.user.username }}</h6>
+                  <small class="text-muted"><i class="fa fa-clock"></i> {{ comment.date|date:"M d, Y" }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if comments|length > 1 %}
+      <button class="carousel-control-prev custom-carousel-btn" type="button" data-bs-target="#commentsCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next custom-carousel-btn" type="button" data-bs-target="#commentsCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+      {% endif %}
+    </div>
+  {% else %}
+    <h4 class="text-danger text-center"><i class="fa fa-times-circle"></i> No comments found!</h4>
+  {% endif %}
+</section>
+
+{% if user.is_authenticated %}
+<!-- Recent Notes -->
+<section class="container-fluid position-relative p-5 pb-5" style="background-image: url('{% static "img/todo.png" %}'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;">
+  <h2 class="text-center mb-4"><i class="fa fa-sticky-note text-warning"></i>Your Recent Notes</h2>
+  {% if notes %}
+    <div id="noteCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for note in notes %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <div class="d-flex justify-content-center">
+              <div class="card border border-warning h-100 shadow rounded-4 animate-on-load" style="width: 90%; max-width: 700px;background-color: #00000080;">
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title text-warning">{{ note.title }}</h5>
+                  <p class="card-text flex-grow-1 text-light">{{ note.body_summary }}</p>
+                  <div class="d-flex justify-content-between mt-3">
+                    <small class="text-light"><i class="fa fa-clock"></i> {{ note.date|date:"M d, Y" }}</small>
+                    <a href="{% url 'note_detail' note.pk %}" class="btn btn-sm btn-outline-warning">Read</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if notes|length > 1 %}
+      <button class="carousel-control-prev custom-carousel-btn" type="button" data-bs-target="#noteCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next custom-carousel-btn" type="button" data-bs-target="#noteCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+      {% endif %}
+    </div>
+  {% else %}
+    <h4 class="text-danger text-center"><i class="fa fa-times-circle"></i> No notes found!</h4>
+  {% endif %}
+</section>
+{% endif %}
+
+{% endblock content %}

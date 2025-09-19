@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+	{{ TodoList.todo_list_name }} todo list  
+{% endblock title %}
+
+
+{% block content %}
+
+
+<style type="text/css">
+	body{
+		background-size: cover;
+	  	background-position: center;
+	  	background-attachment: fixed; 
+	  	background-repeat: no-repeat;
+		background-image: url('{% static "img/items.png" %}');
+	}
+</style>
+
+
+
+
+
+<div class="container mt-5 text-center col-lg-5 col-11" style="
+	
+	background-color: #00ff1c24;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	border-radius: 10px;
+	margin-left: auto;
+	margin-right: auto;
+
+">
+	<div class="row">
+
+	<div class="col-6">
+		<form method="POST" action="{% url 'delete_todo_list' TodoList.pk %}">
+			{% csrf_token %}
+			<button class="btn btn-del">Delete todo list</button>
+		</form>
+	</div>
+
+	<div class="col-6">
+			
+		<button type="button" class="btn btn-do" data-bs-toggle="modal" data-bs-target="#testModal">New item</button>
+
+		<div class="modal fade" id="testModal" tabindex="-1" aria-labelledby="testModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="testModalLabel">Create new item for todo list</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        <form method="POST">
+		        	{% csrf_token %}
+		        	{{ form|crispy }}
+		        	<button type="submit" class="btn btn-success">Create Item</button>
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+	</div>
+</div>
+
+</div>
+
+
+
+
+
+
+<div style="
+	 background: rgba(255, 255, 255, 0.1);
+	 padding: 20px;
+	 border-radius: 8px;
+	 color: wheat;
+" class="container-fluid mt-5 col-lg-11 col-11">
+	
+	<span class="display-6">
+		{% if TodoList.is_done == True %}
+			<i class="fa fa-check text-success"></i>
+		{% else %}
+			<i class="fa fa-close text-danger"></i>
+		{% endif %}
+	 	{{ TodoList.todo_list_name }}</span><br><b class="text-warning">({{ TodoList.todo_list_caption }})</b>
+
+	<hr class="container">
+	
+	{% for i in TodoListItem %}
+		<div style="
+			background: rgba(255, 255, 255, 0.1);
+  			backdrop-filter: blur(6px);
+  			-webkit-backdrop-filter: blur(6px);
+  			color: #fff;
+  			padding: 20px;
+  			border-radius: 8px;
+  			box-shadow: 10px 10px 30px 2px black;
+  			margin-left: auto;
+  			margin-right: auto;
+		" class="col-lg-11 col-11 mt-5">
+			{% if i.is_done == True %}
+				<i class="fa fa-check-circle text-success bg-white rounded rounded-5 fs-2"></i>
+				<span class="fs-3"><del>{{ i.item_name }}</del></span> 
+				
+				<br>
+				<small class="text-warning"><del>{{ i.caption_name }}</del></small>
+				<br><br>
+				<div class="col-12">
+					<form method="POST" action="{% url 'delete_task' i.pk %}">
+						{% csrf_token %}
+						<button class="btn btn-del col-12">Delete item</button>
+					</form>
+				</div>
+			{% else %}
+				<i class="fa fa-times-circle bg-white rounded rounded-5 text-danger fs-2"></i>
+				<span class="fs-3">{{ i.item_name }}</span> 
+				
+				<br>
+				<small class="text-warning">{{ i.caption_name }}</small>
+				<br><br>
+				<div class="row">
+					<div class="col-6">
+						<form method="POST" action="{% url 'do_task' i.pk %}">
+							{% csrf_token %}
+							<button type="submit" class="btn btn-do col-12">I do this </button>
+						</form>
+					</div>
+
+					<div class="col-6">
+						<form method="POST" action="{% url 'delete_task' i.pk %}">
+							{% csrf_token %}
+							<button class="btn btn-del col-12">Delete item</button>
+						</form>
+					</div>
+				</div>
+			{% endif %}
+			
+		
+		</div><br>
+
+	{% empty %}
+		<div class="container mt-5 mb-5 text-center">
+			<h1 class="text-center">No item  found</h1>
+		</div>
+	{% endfor %}
+	<br><i class="text-warning text-end"><i class="fa fa-clock"></i> {{ TodoList.date|date:"Y/m/d - H:i" }}</i>
+	</div>
+
+
+<br>
+<br>
+
+{% endblock content %}

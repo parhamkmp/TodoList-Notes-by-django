@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+	Your todo lists
+{% endblock title %}
+
+
+{% block content %}
+
+<body style="
+	background-size: cover;
+  	background-position: center;
+  	background-attachment: fixed; 
+  	background-repeat: no-repeat;
+	background-image: url('{% static "img/todo.png" %}');
+">
+	
+</body>
+
+  <div class="container py-5">
+    <div class="row">
+    	<div class="col-6">
+    		<span class="mb-4 text-center text-light display-6">Todo lists</span> 
+    	</div>
+    	<div class="col-6 text-end">
+    		<a type="button" href="{% url 'create_todo_list' %}" class="btn btn-do"><i class="fa fa-plus-circle mx-1"></i> Create Todo List</a>
+    	</div>
+    </div>
+
+    <br><br>
+    <hr class="container text-white">
+    <br><br>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      {% for todo in TodoList %}
+	      <div class="col">
+	        <div class="card shadow-sm" style="
+	            background: rgba(255, 255, 255, 0.1);
+		  		backdrop-filter: blur(6px);
+		  		-webkit-backdrop-filter: blur(6px);
+		  		color: #fff;
+		  		padding: 20px;
+		  		border-radius: 8px;
+		  	">
+
+
+	          <div class="card-header d-flex justify-content-between align-items-center border-0">
+	            <span>List name: {{ todo.todo_list_name }}</span>
+	            {% if todo.is_done %}
+	              <span class="done-badge bg-success text-white"><i class="fa fa-check"></i> Done</span>
+	            {% else %}
+	              <span class="done-badge bg-warning text-dark"><i class="fa fa-refresh"></i> in progress</span>
+	            {% endif %}
+	          </div>
+	          <hr class="container ">
+	          <div class="card-body">
+	            <p class="card-text">{{ todo.todo_list_caption }}</p>
+	            <p class="text-info">Number of tasks: {{ todo.items.count }}</p>
+	            <p class="text-info"><i class="fa fa-clock"></i> {{ todo.date|date:"Y/m/d - H:i" }}</p><br>
+	            <div class="d-flex justify-content-between">
+	              <form method="POST" action="{% url 'delete_todo_list' todo.pk %}">
+	              	{% csrf_token %}
+	              	<button type="submit" class="btn-custom"><i class="fa fa-close bg-danger" style="
+	              	border-radius: 50px;
+	              	padding-top: 5px;
+	              	padding-bottom: 5px;
+	              	padding-left: 7px;
+	              	padding-right: 7px;
+	              	"></i> Delete</button>
+	              </form>
+	              <a href="{{ todo.get_absolute_url }}" class="btn-custom"><i class="fa fa-external-link " style="border-radius: 50px;"></i> Full view</a>
+	              {% if todo.is_done == False and todo.items.count >= 1 %}
+	              	<form method="POST" action="{% url 'do_todo_list' todo.pk %}">
+	              		{% csrf_token %}
+	              		<button type="submit" class="btn-custom"><i class="fa fa-check bg-success p-1" style="border-radius: 50px;"></i> do all</button>
+	              		
+	              	</form>
+	              {% endif %}
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+      {% empty %}
+      	<div class="alert container col-lg-10 col-11 mt-5" style="
+      		background: rgba(255, 255, 255, 0.1);
+		  	backdrop-filter: blur(6px);
+		  	-webkit-backdrop-filter: blur(6px);
+		  	color: #fff;
+		  	padding: 20px;
+		  	border-radius: 8px;
+      	">
+      		<div class="row text-end">
+      			<div class="col-6 text-start mt-lg-1">
+      				<h4>~ No todo list found ~</h4>
+      			</div>
+      			<div class="col-6 mt-lg-0 mt-2">
+      				<a type="button" href="{% url 'create_todo_list' %}" class="btn btn-custom">Create first</a>
+      			</div>
+      		</div>
+      	</div>
+      {% endfor %}
+    
+    </div>
+  </div>
+
+
+
+{% endblock content %}

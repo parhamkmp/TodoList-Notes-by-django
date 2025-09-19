@@ -1,0 +1,304 @@
+body{
+  font-family: ubuntu;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-on-load {
+  animation: fadeInUp 1s ease-out forwards;
+  opacity: 0;
+}
+.hero {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+  .hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  .hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+  }
+
+
+.btn-custom {
+  transition: 0.2s;
+   cursor: pointer;
+   background-color: transparent;
+   color: white;
+   padding-top: 15px;
+   padding-bottom: 15px;
+   padding-left: 15px;
+   padding-right: 15px;
+   border-radius: 10px;
+   text-decoration: none;
+   border-bottom:4px white solid;
+   border-top: 0.5px white solid;
+   border-left: 0.5px white solid;
+   border-right: 0.5px white solid;
+}
+
+
+
+
+.btn-custom:hover {
+  transition: 0.2s;
+  background-color: rgb(136, 136, 136);
+  color: white;
+  border-bottom:4px purple solid;
+  border-top: 0.5px purple solid;
+  border-left: 0.5px purple solid;
+  border-right: 0.5px purple solid;
+}
+
+
+
+#id_password1_helptext{
+  border: 0.5px solid cyan;
+  border-radius: 5px;
+  margin-top: 30px;
+}
+
+#id_password1_helptext li{
+  color: cyan;
+  margin-top: 10px;
+}
+
+#id_password2_helptext{
+  color: white;
+  color: black;
+  border: 0.5px solid black;
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 20px;
+}
+
+#id_username_helptext {
+  color: lightgreen;
+  border: 0.5px solid lightgreen;
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 20px;
+}
+
+
+
+.login_to_show {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.5s ease-in-out;
+}
+
+.login_to_show.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+
+.btn-custom {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+
+.btn-custom.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+
+
+
+
+.light-mode {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+.dark-mode {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+.sidebar {
+  min-height: 100vh;
+  padding: 15px;
+  background-color: #ffffff;
+  border-right: 1px solid #ddd;
+  transition: background 0.4s ease;
+}
+
+.dark-mode .sidebar {
+  background-color: #1e1e1e;
+  border-color: #333;
+}
+
+.sidebar .btn {
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.content {
+  padding: 20px;
+}
+
+.section {
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.section.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.item {
+  background-color: #e9ecef;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.dark-mode .item {
+  background-color: #2a2a2a;
+}
+
+
+
+
+
+
+
+.done-badge {
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.card-header {
+  font-weight: bold;
+}
+
+
+/*
+.col {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.3s ease-out forwards;
+}
+
+.col:nth-child(1) { animation-delay: 0.1s; }
+.col:nth-child(2) { animation-delay: 0.2s; }
+.col:nth-child(3) { animation-delay: 0.3s; }
+*/
+
+
+
+
+
+.btn-del {
+  transition: 0.2s;
+ cursor: pointer;
+ background-color: rgba(121, 121, 121, 0.616);
+ border-bottom: 4px transparent solid;
+ color: white;
+
+}
+
+
+
+
+.btn-del:hover {
+  transition: 0.2s;
+  background-color: rgb(136, 136, 136);
+  color: white;
+  border-bottom:4px #dc3545 solid;
+}
+
+
+
+.btn-do {
+  transition: 0.2s;
+ cursor: pointer;
+ background-color: rgba(121, 121, 121, 0.616);
+ border-bottom: 4px transparent solid;
+ color: white;
+
+}
+
+
+
+
+.btn-do:hover {
+  transition: 0.2s;
+  background-color: rgb(136, 136, 136);
+  color: white;
+  border-bottom:4px #198754 solid;
+}
+
+
+
+
+.btn-note {
+  transition: 0.2s;
+ cursor: pointer;
+ background-color: rgba(121, 121, 121, 0.616);
+ border-bottom: 4px transparent solid;
+ color: white;
+
+}
+
+
+
+
+.btn-note:hover {
+  transition: 0.2s;
+  background-color: rgb(136, 136, 136);
+  color: white;
+  border-bottom:4px blue solid;
+}
+
+
+
+
+
+
+.sidebar .btn-custom.active {
+    background-color: #075cff9c; 
+    color: #fff;
+    font-weight: bold;
+}
+
+

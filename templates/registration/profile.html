@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Your profile
+{% endblock title %}
+
+{% block content %}
+
+<body style="
+  	  font-family: 'Segoe UI', sans-serif;
+      transition: background 0.4s ease, color 0.4s ease;
+">
+</body>	
+
+
+
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-3 col-lg-2 sidebar">
+      <button class="btn btn-custom" onclick="showSection('info')"><i class="fa fa-user-circle"> </i> User Info</button>
+      <button class="btn btn-custom" onclick="showSection('todos')"><i class="fa fa-tasks text-warning"> </i>  All Todos</button>
+      <button class="btn btn-custom" onclick="showSection('done')"><i class="fa fa-check-circle text-success"></i> Completed</button>
+      <button class="btn btn-custom" onclick="showSection('undone')"><i class="fa fa-times-circle text-danger"></i> Pending</button>
+      <button class="btn btn-custom" onclick="showSection('notes')">📝 Notes</button>
+      <hr>
+      <button class="btn btn-secondary" onclick="toggleTheme()">🌓 Toggle Theme</button>
+      <br><br>
+      <a href="{% url 'home_page' %}" class="btn btn-light text-center"><i class="fa fa-undo"></i> Back to home</a>
+    </nav>
+
+    <main class="col-md-9 col-lg-10 content">
+      <div id="info" class="section active">
+        <h4><i class="fa fa-user-circle"></i> User Info</h4>
+        <div class="item">Username: {{ user.username }}</div>
+        {% if user.first_name %}
+        	<div class="item">Name: {{ user.first_name }}</div>
+        {% endif %}
+        {% if user.last_name %}
+        	<div class="item">Lastname: {{ user.last_name }}</div>
+        {% endif %}
+        {% if user.email %}
+        	<div class="item">Email: {{ user.email }}</div>
+        {% endif %}
+        {% if user.phone_number %}
+        	<div class="item">Phone-number: {{ user.phone_number }}</div>
+        {% endif %}
+        {% if user.job %}
+        	<div class="item">Job: {{ user.job }}</div>
+      	{% endif %}
+      
+      <form action="/accounts/logout/" method="post">
+      	{% csrf_token %}
+      	<button type="submit" class="btn btn-del mt-4 btn-lg">LogOut</button>
+      </form>
+      
+      </div>
+
+      <div id="todos" class="section">
+        <h4><i class="fa fa-list-alt text-warning"></i> All Todos</h4>
+
+        {% for i in todo_list %}
+          <div class="item">
+            {% if i.is_done == True %}
+              <i class="fa fa-check-circle text-success"></i>
+            {% else %}
+              <i class="fa fa-times-circle text-danger"></i>
+            {% endif %}
+
+            <span class="fs-3 fw-bold ">{{ i.todo_list_name }}</span> <span class="text-warning">({{ i.todo_list_caption }})</span>
+            <br>
+            <span class="text-primary">Number of items: {{ i.items.count }}</span>
+            <br>
+            <a href="{{ i.get_absolute_url }}" class="btn btn-primary"><i class="fa fa-external-link-alt"></i> Full view</a>
+          </div>
+        {% empty %}
+          <div class="item text-danger">
+            <div class="row">
+              <div class="col-4">
+                No todo list found !
+              </div>
+              <div class="col-8 text-end">
+                <a href="{% url 'create_todo_list' %}" class="btn btn-do">Create first !</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div id="done" class="section">
+        <h4><i class="fa fa-check-circle text-success"></i> Completed Tasks</h4>
+        {% for i in completed_todo_list %}
+          <div class="item done">
+            <i class="fa fa-check-circle text-success"></i>
+            <span class="fs-3 fw-bold">{{ i.todo_list_name }}</span>
+            <span class="text-warning"> ({{ i.todo_list_caption }})</span>
+            <br>
+            <span class="text-primary">Number of items: {{ i.items.count }}</span>
+            <br>
+            <a href="{{ i.get_absolute_url }}" class="btn btn-primary"><i class="fa fa-external-link-alt"></i> Full view</a>
+          </div>
+
+        {% empty %}
+          <div class="item text-danger">
+              <div class="row">
+                <div class="col-4">
+                  No completed todo list found !
+                </div>
+                <div class="col-8 text-end">
+                  <a href="{% url 'todo_lists' %}" class="btn btn-note">Todo lists</a>
+                </div>
+              </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div id="undone" class="section">
+        <h4><i class="fa fa-times-circle text-danger"></i> Pending Tasks</h4>
+        {% for i in pending_todo_list %}
+          
+          <div class="item done">
+            <i class="fa fa-times-circle text-danger"></i>
+            <span class="fs-3 fw-bold">{{ i.todo_list_name }}</span>
+            <span class="text-warning"> ({{ i.todo_list_caption }})</span>
+            <br>
+            <span class="text-primary">Number of items: {{ i.items.count }}</span>
+            <br>
+            <a href="{{ i.get_absolute_url }}" class="btn btn-primary"><i class="fa fa-external-link-alt"></i> Full view</a>
+          </div>
+        {% empty %}
+          <div class="item text-danger">
+              <div class="row">
+                <div class="col-4">
+                  No pending todo list found !
+                </div>
+                <div class="col-8 text-end">
+                  <a href="{% url 'todo_lists' %}" class="btn btn-note">Todo lists</a>
+                </div>
+              </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div id="notes" class="section">
+        <h4>📝 Notes</h4>
+        {% for i in notes %}
+          <div class="item">
+            <span class="fs-3 fw-bold">{{ i.title }}</span>
+            <br>
+            <span class="text-warning">{{ i.body_summary }}</span>
+            <br><br>
+            <a href="{{ i.get_absolute_url }}" class="btn btn-primary"><i class="fa fa-external-link-alt"></i> Full view</a>
+          </div>
+        {% empty %}
+          <div class="item text-danger">
+              <div class="row">
+                <div class="col-4">
+                  No note found !
+                </div>
+                <div class="col-8 text-end">
+                  <a href="{% url 'create_note' %}" class="btn btn-note"><i class="fa fa-plus-circle"></i> Create new not</a>
+                </div>
+              </div>
+          </div>
+        {% endfor %}
+      </div>
+    </main>
+  </div>
+</div>
+
+
+
+
+{% endblock content %}
