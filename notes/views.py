@@ -7,6 +7,9 @@ from django.contrib.auth.decorators import login_required
 from .forms import NoteCreationForm, NoteEditForm
 from .models import Note
 
+
+
+
 class NoteListView(LoginRequiredMixin, ListView):
 	model = Note
 	template_name = 'note/note_list.html'
