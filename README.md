@@ -22,3 +22,12 @@ Follow these steps to run the project locally:
    ```bash
    git clone https://github.com/parhamkmp/TodoList-Notes-by-django.git
    cd TodoList-Notes-by-django
+
+
+
+<mark>To run tests faster, you can run the following command in your CMD or terminal. Note that the number 4 is the number of CPU cores you selected for processing: py manage.py test --parallel 4<mark>
+
+
+
+
+
